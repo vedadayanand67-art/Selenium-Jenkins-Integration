@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Regional Regression Suite">
+    <test name="Regional Regression Tests">
+        <classes>
+            <class name="integrationpom.Ingredient">
+                <methods>
+                    <include name="ingredientTest"/>
+                </methods>
+            </class>
+            <class name="smokepom.Smoke">
+                <methods>
+                    <include name="recipeTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

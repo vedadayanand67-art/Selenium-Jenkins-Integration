@@ -1,0 +1,126 @@
+package integration;
+
+import java.io.IOException;
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.sidecfhef.genericutility.fileutility.ExcelUtility;
+import com.sidecfhef.genericutility.fileutility.FileUtility;
+import com.sidechef.genericutility.webdriverutility.JavaUtility;
+import com.sidechef.genericutility.webdriverutility.WebDriverUtility;
+
+public class Chickenquesadilla {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		FileUtility fLib=new FileUtility();
+		JavaUtility jLib=new JavaUtility();
+		ExcelUtility elib=new ExcelUtility();
+		WebDriverUtility wlib=new WebDriverUtility();
+		
+			String browser=fLib.getDataFromPropertiesFile("browser");
+			String URL=fLib.getDataFromPropertiesFile("url");	
+			
+				//read testscript data from excel file
+			String USERNAME = elib.getDataFromExcel("Sheet1", 1, 2);
+			String EMAIL = elib.getDataFromExcel("Sheet1", 1, 3)
+			        .replace("@", jLib.getRandomNumber() + "@");			
+			String PASSWORD = elib.getDataFromExcel("Sheet1", 1, 4);
+
+			System.out.println("Generated Email: " + EMAIL);
+			
+WebDriver driver=null;
+if(browser.equalsIgnoreCase("chrome"))
+{
+	driver=new ChromeDriver();
+}
+else if(browser.equalsIgnoreCase("firefox"))
+{
+	driver=new FirefoxDriver();
+	
+}
+else if(browser.equalsIgnoreCase("edge"))
+{
+	driver=new EdgeDriver();
+}
+	
+	else
+	{
+		driver=new ChromeDriver();
+	}
+
+
+	wlib.maximize(driver);
+	wlib.waitForPageToLoad(driver);
+	driver.get(URL);
+	//Sign up
+			driver.findElement(By.xpath("//button[text()='Accept all']")).click();
+			driver.findElement(By.linkText("SIGN UP")).click();
+			try {
+			    new WebDriverWait(driver, Duration.ofSeconds(5))
+			        .until(ExpectedConditions.elementToBeClickable(
+			            By.xpath("//button[text()='Accept all']")))
+			        .click();
+			} catch (TimeoutException e) {
+			    System.out.println("Button not present. Continue.");
+			}
+			//Sign up feature
+			driver.findElement(By.xpath("//div[@data-testid='email-signup']")).click();
+			driver.findElement(By.xpath("//input[@placeholder='What should we call you?']"))
+		      .sendKeys(USERNAME);
+			driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys(EMAIL);
+			driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys(PASSWORD);
+			driver.findElement(By.xpath("//div[@data-testid='signup']")).click();
+			By startOnboarding = By.xpath("//button[normalize-space()='START ONBOARDING']");
+
+			wlib.waitAndClick(driver, startOnboarding);
+			driver.findElement(startOnboarding).click();
+		
+			driver.findElement(By.xpath("//div[text()='Vegan']")).click();
+			driver.findElement(By.xpath("//button[text()='NEXT']")).click();
+			
+			
+			
+			By eatHealthy = By.xpath("//div[normalize-space()='Eat Healthy']");
+
+			wlib.waitAndClick(driver, eatHealthy);
+			driver.findElement(eatHealthy).click();
+			driver.findElement(By.xpath("//button[text()='NEXT']")).click();
+			driver.findElement(By.xpath("//button[text()='GET STARTED']")).click();
+		
+			WebElement recipes = driver.findElement(By.id("nav-recipe"));
+			wlib.mousemoveOnElement(driver, recipes);
+
+			// Click Quick & Easy
+			By quickEasy = By.xpath("//a[normalize-space()='Quick & Easy']");
+			wlib.waitAndClick(driver, quickEasy);
+			driver.findElement(quickEasy).click();
+			wlib.scrollByAmount(driver, 0, 700);
+			// Locate Barbecue Chicken Quesadillas
+			By quesadillas = By.xpath("//h3[normalize-space()='Barbecue Chicken Quesadillas']");
+
+			WebElement chicken = driver.findElement(quesadillas);
+
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, 500);", chicken);
+
+			wlib.waitAndClick(driver, quesadillas);
+			chicken.click();
+
+driver.findElement(By.xpath("//div[normalize-space()='VIEW RECIPE']")).click();
+driver.quit();
+
+	}
+
+}
