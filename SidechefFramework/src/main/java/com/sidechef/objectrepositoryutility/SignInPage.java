@@ -18,10 +18,11 @@ public class SignInPage extends WebDriverUtility{
 	WebDriver driver;
    
 
-    public SignInPage(WebDriver driver) {
-        this.driver = driver;
-               PageFactory.initElements(driver, this);
-    }
+	public SignInPage(WebDriver driver) {
+	    this.driver = driver;
+	    this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+	    PageFactory.initElements(driver, this);
+	}
 
     @FindBy(xpath="//button[text()='Accept all']")
     private WebElement acceptAllBtn;

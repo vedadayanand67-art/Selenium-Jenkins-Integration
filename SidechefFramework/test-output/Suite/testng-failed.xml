@@ -15,6 +15,7 @@
           <include name="configBC"/>
           <include name="configBM"/>
           <include name="configAM"/>
+          <include name="searchTest"/>
           <include name="signInTest"/>
         </methods>
       </class> <!-- smokepom.Smoke -->
