@@ -57,8 +57,8 @@ public class WebDriverUtility {
 		{
 			String windowID=it.next();
 			driver.switchTo().window(windowID);
-			String actUrl=driver.getTitle();
-			if(actUrl.contains(partialTitle))
+			String actTitle=driver.getTitle();
+			if(actTitle.contains(partialTitle))
 			{
 				break;
 			}
